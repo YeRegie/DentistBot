@@ -19,6 +19,16 @@ if 'chat_session' not in st.session_state:
     st.session_state.dental_history = ""
     st.session_state.dental_issue = ""
 
+# Define dental-related keywords
+dental_keywords = [
+    "tooth", "teeth", "gum", "oral", "dental", "cavity", "root canal", 
+    "orthodontics", "braces", "crown", "filling", "extraction", "implant", 
+    "dentist", "periodontitis", "gingivitis", "halitosis", "plaque", "tartar"
+]
+
+def is_dental_question(question):
+    return any(keyword in question.lower() for keyword in dental_keywords)
+
 def handle_chat(question):
     try:
         response = st.session_state.chat_session.send_message(question)
@@ -73,22 +83,21 @@ To initiate a new session and clear all prior conversations, utilize the **"Rese
 """
     st.markdown(text, unsafe_allow_html=True)
 
-
-# In[14]:
-
-
 # Main interaction area 
 user_input = st.text_input("**Please type your dental-related questions here:**", key="user_query")
 if st.button("Ask Gigi"):
     if user_input:
-        # See if the question already mentions specific words we're looking for.
-        if 'reasons' in user_input.lower() or 'treatments' in user_input.lower():
-            response_text = handle_chat(user_input) 
+        if is_dental_question(user_input):
+            # See if the question already mentions specific words we're looking for.
+            if 'reasons' in user_input.lower() or 'treatments' in user_input.lower():
+                response_text = handle_chat(user_input) 
+            else:
+                # Help the user narrow down their question to make it clearer.
+                refined_query = f"What are some typical reasons, causes and treatments for {user_input}?"
+                response_text = handle_chat(refined_query)
+            display_history()
         else:
-            # help the user narrow down their question to make it clearer.
-            refined_query = f"What are some typical reasons, causes and treatments for {user_input}?"
-            response_text = handle_chat(refined_query)
-        display_history()
+            st.warning("Kindly input your inquiry regarding dental health information.")
     else:
         st.warning("Kindly input your inquiry regarding dental health information.")
 
