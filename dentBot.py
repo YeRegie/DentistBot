@@ -97,7 +97,7 @@ if st.button("Ask Gigi"):
                 response_text = handle_chat(refined_query)
             display_history()
         else:
-            st.warning("Kindly input your inquiry regarding dental health information.")
+            st.warning("**!!Kindly input your inquiry regarding dental health information!!**")
     else:
         st.warning("Kindly input your inquiry regarding dental health information.")
 
