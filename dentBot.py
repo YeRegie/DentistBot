@@ -17,6 +17,7 @@ if 'chat_session' not in st.session_state:
     st.session_state.interaction_count = 0
     st.session_state.step = 0
     st.session_state.dental_history = ""
+    st.session_state.dental_issue = ""
 
 def handle_chat(question):
     try:
@@ -42,11 +43,22 @@ def display_history():
 st.set_page_config(page_title="GGSS - Gigi's Grin Guru")
 st.header("Your Chatbot for Dental Wellness")
 
-# Directly display Gigi's Smile Support: Getting Started
-text = """Welcome to GGSS - Gigi's Smile Support! Throughout this chat, Gigi will serve as your AI dental assistant. This chatbot is crafted to offer essential health insights and assist you with basic questions regarding symptoms, dental conditions, and wellness tips. Let's get started with these straightforward instructions for engaging with the chatbot:
+# Info about the Developer section
+st.markdown("**Info about the Developer**")
+developer_info = """Regino C. Gallena\n
+BSCS 3A AI
+Final Project for CCS 229 - Intelligent Systems
+Bachelor of Science in Computer Science
+College of Information and Communications Technology
+West Visayas State University
+"""
+st.write(developer_info)
+
+# Gigi's Smile Support: Getting Started section
+getting_started_text = """Welcome to GGSS - Gigi's Smile Support! Throughout this chat, Gigi will serve as your AI dental assistant. This chatbot is crafted to offer essential health insights and assist you with basic questions regarding symptoms, dental conditions, and wellness tips. Let's get started with these straightforward instructions for engaging with the chatbot:
 
 1. **Launching the Chat**\n
-Upon opening the application, you'll encounter a text input field labeled **"Enter your dental inquiry here:"**\n. This is where you'll pose your questions.\n
+Upon opening the application, you'll encounter a text input field labeled **"Enter your dental inquiry here:"**. This is where you'll pose your questions.\n
 2. **Submitting Your Inquiry**\n
 Enter your question in the text box, ensuring it remains focused on dental symptoms or health conditions. For instance, rather than stating **"I feel unwell,"** you could inquire, **"What are common causes of tooth sensitivity?"** or simply state your symptom, such as **"Toothache."** Optionally, you can include any suspected causes for a more precise response.
 Press the "Ask Gigi" button to send your question.\n
@@ -57,7 +69,7 @@ Should you have additional questions for Gigi, simply type them into the text bo
 5. **Resetting the Conversation**\n
 To initiate a new session and clear all prior conversations, utilize the **"Reset Conversation"** button. This action will erase all chat history, allowing you to commence anew.\n
 """
-st.markdown(text, unsafe_allow_html=True)
+st.markdown(getting_started_text, unsafe_allow_html=True)
 
 user_input = st.text_input("Please type your dental-related questions here:", key="user_query")
 
@@ -68,13 +80,15 @@ if st.button("Ask Gigi"):
             handle_chat("Can you tell me more about your dental history?")
             st.session_state.step += 1
         elif st.session_state.step == 1:
-            handle_chat(user_input)
+            st.session_state.dental_issue = user_input
+            handle_chat("What specific dental issue are you experiencing currently?")
             st.session_state.step += 1
         elif st.session_state.step == 2:
+            handle_chat(user_input)
+            st.session_state.step += 1
+        elif st.session_state.step >= 3:
             response_text = handle_chat(user_input)
-            conclusion_response = "Thank you for providing your dental history and current issues. Is there anything else I can assist you with today?"
-            st.session_state.chat_history.append({"type": "Response", "content": conclusion_response})
-            st.session_state.step = 3  # End the current sequence
+            st.session_state.chat_history.append({"type": "Response", "content": "Thank you for providing detailed information. Is there anything else I can assist you with?"})
         display_history()
     else:
         st.warning("Kindly input your inquiry regarding dental health information.")
@@ -85,3 +99,5 @@ if st.button("Reset Conversation"):
     st.session_state.chat_history = []
     st.session_state.interaction_count = 0
     st.session_state.step = 0  # Reset the step for new session
+    st.session_state.dental_history = ""
+    st.session_state.dental_issue = ""
