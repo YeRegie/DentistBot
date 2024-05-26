@@ -30,12 +30,12 @@ def is_relevant_question(question):
     health_keywords = ['tooth', 'dental', 'oral', 'teeth', 'gums', 'mouth', 'cavity', 'pain', 'sensitivity', 'health']
     return any(keyword in question.lower() for keyword in health_keywords)
 
+
 def handle_chat(question):
     try:
         if is_relevant_question(question):
-            intro_response = "Hi there! I'm Gigi, your AI dentist chatbot here to help you with your dental symptoms."
             response = st.session_state.chat_session.send_message(question)
-            full_response = f"{intro_response} {response.text} Is there anything else I can assist you with regarding your dental health?"
+            full_response = f"Hi there! I'm Gigi, your AI dentist chatbot here to help you with your dental symptoms. {response.text} Is there anything else I can assist you with regarding your dental health?"
         else:
             full_response = "I'm here to help with dental and health-related questions. Could you please ask something related to dental health or oral hygiene?"
         
