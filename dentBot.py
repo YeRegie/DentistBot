@@ -82,11 +82,11 @@ user_input = st.text_input("Please type your dental-related questions here:", ke
 if st.button("Ask Gigi"):
     if user_input:
         # See if the question already mentions specific words we're looking for.
-        if 'causes' in user_input.lower() or 'treatments' in user_input.lower():
+        if 'reasons' in user_input.lower() or 'treatments' in user_input.lower():
             response_text = handle_chat(user_input) 
         else:
             # help the user narrow down their question to make it clearer.
-            refined_query = f"What are some typical causes and treatments for {user_input}?"
+            refined_query = f"What are some typical reasons, causes and treatments for {user_input}?"
             response_text = handle_chat(refined_query)
         display_history()
     else:
