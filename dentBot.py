@@ -18,24 +18,25 @@ if 'chat_session' not in st.session_state:
     st.session_state.step = 0
     st.session_state.dental_history = ""
     st.session_state.dental_issue = ""
-
+    
 # Define dental-related keywords
-dental_keywords = [
-    "tooth", "teeth", "gum", "oral", "dental", "cavity", "root canal", 
-    "orthodontics", "braces", "crown", "filling", "extraction", "implant", 
-    "dentist", "periodontitis", "gingivitis", "halitosis", "plaque", "tartar"
-]
-
-def is_dental_question(question):
-    return any(keyword in question.lower() for keyword in dental_keywords)
+def is_relevant_question(question):
+    health_keywords = ['tooth', 'dental', 'oral', 'teeth', 'gums', 'mouth', 'cavity', 'pain', 'sensitivity', 'health']
+    return any(keyword in question.lower() for keyword in health_keywords)
 
 def handle_chat(question):
     try:
-        response = st.session_state.chat_session.send_message(question)
-        st.session_state.chat_history.append({"type": "Question", "content": question})
-        st.session_state.chat_history.append({"type": "Response", "content": response.text})
-        st.session_state.interaction_count += 1
-        return response.text
+        if is_relevant_question(question):
+            response = st.session_state.chat_session.send_message(question)
+            st.session_state.chat_history.append({"type": "Question", "content": question})
+            st.session_state.chat_history.append({"type": "Response", "content": response.text})
+            st.session_state.interaction_count += 1
+            return response.text
+        else:
+            response_text = "Please ask questions related to dental or health issues."
+            st.session_state.chat_history.append({"type": "Question", "content": question})
+            st.session_state.chat_history.append({"type": "Response", "content": response_text})
+            return response_text
     except Exception as e:
         st.error(f"An error occurred: {str(e)}")
         time.sleep(1)
@@ -87,10 +88,7 @@ To initiate a new session and clear all prior conversations, utilize the **"Rese
 user_input = st.text_input("**Please type your dental-related questions here:**", key="user_query")
 if st.button("Ask Gigi"):
     if user_input:
-        if st.session_state.interaction_count == 0 or is_dental_question(user_input):
-            response_text = handle_chat(user_input)
-        else:
-            response_text = handle_chat(f"This might not be dental-related, but I'll try to help: {user_input}")
+        response_text = handle_chat(user_input)
         display_history()
     else:
         st.warning("Kindly input your inquiry regarding dental health information.")
@@ -100,7 +98,3 @@ if st.button("Reset Conversation"):
     model = genai.GenerativeModel('gemini-1.5-pro')
     st.session_state.chat_session = model.start_chat()
     st.session_state.chat_history = []  # This clears the history
-    st.session_state.interaction_count = 0
-    st.session_state.step = 0
-    st.session_state.dental_history = ""
-    st.session_state.dental_issue = ""
