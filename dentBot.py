@@ -45,13 +45,13 @@ st.header("Gigi's Smile Support: Grin Guru")
 st.markdown("**Your Chatbot for Dental Wellness**\n")
 
 # Info about the Developer section
-st.markdown("**Info about the Developer**")
-developer_info = """**Regino C. Gallena**\n
-BSCS 3A AI
-Final Project for CCS 229 - Intelligent Systems
-Bachelor of Science in Computer Science
-College of Information and Communications Technology
-West Visayas State University
+st.markdown("**Info about the Project**")
+developer_info = """**Name:** Regino C. Gallena\n
+**Section:** BSCS 3A AI\n
+
+**Details:** A final project requirement for completion of the CCS 229 - Intelligent Systems
+course in the Bachelor of Science in Computer Science program 
+at the College of Information and Communications Technology, West Visayas State University.
 """
 st.write(developer_info)
 
