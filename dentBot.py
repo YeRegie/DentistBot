@@ -87,17 +87,11 @@ To initiate a new session and clear all prior conversations, utilize the **"Rese
 user_input = st.text_input("**Please type your dental-related questions here:**", key="user_query")
 if st.button("Ask Gigi"):
     if user_input:
-        if is_dental_question(user_input):
-            # See if the question already mentions specific words we're looking for.
-            if 'reasons' in user_input.lower() or 'treatments' in user_input.lower():
-                response_text = handle_chat(user_input) 
-            else:
-                # Help the user narrow down their question to make it clearer.
-                refined_query = f"What are some typical reasons, causes and treatments for {user_input}?"
-                response_text = handle_chat(refined_query)
-            display_history()
+        if st.session_state.interaction_count == 0 or is_dental_question(user_input):
+            response_text = handle_chat(user_input)
         else:
-            st.warning("**!!Kindly input your inquiry regarding dental health information!!**")
+            response_text = handle_chat(f"This might not be dental-related, but I'll try to help: {user_input}")
+        display_history()
     else:
         st.warning("Kindly input your inquiry regarding dental health information.")
 
@@ -106,3 +100,7 @@ if st.button("Reset Conversation"):
     model = genai.GenerativeModel('gemini-1.5-pro')
     st.session_state.chat_session = model.start_chat()
     st.session_state.chat_history = []  # This clears the history
+    st.session_state.interaction_count = 0
+    st.session_state.step = 0
+    st.session_state.dental_history = ""
+    st.session_state.dental_issue = ""
