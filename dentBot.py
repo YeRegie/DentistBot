@@ -78,7 +78,7 @@ To initiate a new session and clear all prior conversations, utilize the **"Rese
 
 
 # Main interaction area 
-user_input = st.text_input("Please type your dental-related questions here:", key="user_query")
+user_input = st.text_input("**Please type your dental-related questions here:**", key="user_query")
 if st.button("Ask Gigi"):
     if user_input:
         # See if the question already mentions specific words we're looking for.
