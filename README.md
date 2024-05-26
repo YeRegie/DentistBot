@@ -47,5 +47,53 @@ at the College of Information and Communications Technology, West Visayas State 
 Execute the following command to run the app:
 ```bash
 streamlit run your_script_name.py
-
+```
 ### Functionalities
+
+## Key Features 
+1. **Interactive Dental Health Assistance:**
+
+- Users can input their dental health-related questions, and the chatbot will provide accurate and relevant responses to help them understand their symptoms and conditions better.
+  
+2. **Step-by-Step Interaction:**
+
+- The chatbot engages users with multiple prompts to gather detailed information before offering a conclusion or advice. This ensures a thorough understanding of the user's situation.
+  
+3. **Maintains Chat History:**
+
+- All interactions are archived within a scrollable container, allowing users to review past conversations easily. This feature helps in maintaining continuity in the discussion.
+  
+4. **Reset Conversation:**
+
+- Users can reset the conversation at any time to start a new session. This feature clears all previous chat history and allows users to commence a new interaction with the chatbot.
+  
+5. **Personalized Interaction:**
+
+- The chatbot introduces itself as Gigi, the AI dentist, and provides a welcoming introduction to make the interaction more friendly and engaging.
+
+## How It Works
+
+1. **Launching the Chat:**
+
+- Upon opening the application, users encounter a text input field where they can enter their dental inquiries.
+
+2. **Multiple Prompts for Detailed Information:**
+
+- The chatbot first asks about the user's dental history, followed by specific questions about their current dental issues. This step-by-step approach ensures comprehensive data collection before providing any conclusions.
+
+3. **Accurate Responses Using Generative AI:**
+
+-The chatbot utilizes Gemini, Google's Generative AI model, to generate accurate and helpful responses based on the user's input.
+
+4. **Continuing the Conversation:**
+
+- Users can continue to ask follow-up questions, and the chatbot will respond accordingly, maintaining the flow of the conversation without resetting.
+
+5. **Resetting the Conversation:**
+
+- If users wish to start a new session, they can reset the conversation, which clears the chat history and interaction count, allowing for a fresh start.
+
+
+
+
+
