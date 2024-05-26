@@ -25,11 +25,10 @@ if 'chat_session' not in st.session_state:
     model = genai.GenerativeModel('gemini-1.5-pro')
     st.session_state.chat_session = model.start_chat()
     st.session_state.chat_history = []
-    
+
 def is_relevant_question(question):
     health_keywords = ['tooth', 'dental', 'oral', 'teeth', 'gums', 'mouth', 'cavity', 'pain', 'sensitivity', 'health']
     return any(keyword in question.lower() for keyword in health_keywords)
-
 
 def handle_chat(question):
     try:
