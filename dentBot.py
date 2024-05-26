@@ -29,20 +29,24 @@ if 'chat_session' not in st.session_state:
 
 def handle_chat(question):
     try:
-        if is_relevant_question(question):
-            response = st.session_state.chat_session.send_message(question)
-            full_response = f"Hi there! I'm Gigi, your AI dentist chatbot here to help you with your dental symptoms. {response.text} Is there anything else I can assist you with regarding your dental health?"
-        else:
-            full_response = "I'm here to help with dental and health-related questions. Could you please ask something related to dental health or oral hygiene?"
-        
+         # add an introduction to our response to make it more welcoming for users.
+        intro_response = "Hi there! I'm Gigi, your AI Dentist chatbot here to help you evaluate your dental Inquiries.\n"
+ 
+     
+        # Sends the user's question to the chat API and gets a response.
+        response = st.session_state.chat_session.send_message(question)
+        # Puts together a friendly introduction, the API's response, and a prompt to keep the conversation going.
+        full_response = f"{intro_response} {response.text} Is there anything else I can assist you with regarding your dental health?"
+
+        # Appends the question and response to the session's history for display.
         st.session_state.chat_history.append({"type": "Question", "content": question})
         st.session_state.chat_history.append({"type": "Response", "content": full_response})
         return full_response
     except Exception as e:
+        # Handles exceptions by displaying an error message and returning a fallback message.
         st.error(f"An error occurred: {str(e)}")
-        time.sleep(1)
+        time.sleep(1)  
         return "An error occurred. Please try again."
-
 def display_history():
     with st.container():
         for entry in st.session_state.chat_history:
