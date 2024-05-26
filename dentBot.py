@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 import time
 
 # Load API key from environment variable
-GEMINI_API_KEY = "AIzaSyAiZes6UmSG0UibkudviRkp17BBOgtuu90"
+api_key = os.getenv("GEMINI_API_KEY")
 
 # Configure Gemini API with the API key loaded from environment variable
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
@@ -47,7 +47,7 @@ st.markdown("**Your Chatbot for Dental Wellness**\n")
 # Info about the Developer section
 st.markdown("**Info about the Project**")
 developer_info = """**Name:** Regino C. Gallena\n
-**Section:** BSCS 3A AI\n
+**Section:** BSCS 3A-AI\n
 
 **Details:** A final project requirement for completion of the CCS 229 - Intelligent Systems
 course in the Bachelor of Science in Computer Science program 
