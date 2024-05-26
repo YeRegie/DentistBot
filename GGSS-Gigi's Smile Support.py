@@ -7,6 +7,7 @@
 import streamlit as st
 import os
 import google.generativeai as genai
+from dotenv import load_dotenv
 import time
 
 
@@ -15,16 +16,13 @@ import time
 
 # Load API key from environment variable
 api_key = os.getenv("GEMINI_API_KEY")
+genai.configure(api_key=os.getenv("API_KEY"))
 
-if api_key is None:
-    st.error("API key is not set. Please set the GEMINI_API_KEY environment variable.")
-else:
-    genai.configure(api_key=api_key)
 
 if 'chat_session' not in st.session_state:
-    model = genai.GenerativeModel('gemini-1.5-pro')
+    model = genai.GenerativeModel('gemini-1.5-pro')  
     st.session_state.chat_session = model.start_chat()
-    st.session_state.chat_history = []
+    st.session_state.chat_history = []  
 
 
 # In[10]:
