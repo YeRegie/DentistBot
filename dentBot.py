@@ -15,7 +15,7 @@ import time
 
  # Load API key from environment variable
 
- api_key = os.getenv("GEMINI_API_KEY")
+api_key = os.getenv("GEMINI_API_KEY")
 
  
  
