@@ -1,84 +1,48 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[8]:
-
-
 import streamlit as st
 import os
 import google.generativeai as genai
 from dotenv import load_dotenv
 import time
 
-
-# In[9]:
-
-
 # Load API key from environment variable
-GEMINI_API_KEY="AIzaSyAiZes6UmSG0UibkudviRkp17BBOgtuu90"
+GEMINI_API_KEY = "AIzaSyAiZes6UmSG0UibkudviRkp17BBOgtuu90"
 
 # Configure Gemini API with the API key loaded from environment variable
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
-
 if 'chat_session' not in st.session_state:
-    model = genai.GenerativeModel('gemini-1.5-pro')  
+    model = genai.GenerativeModel('gemini-1.5-pro')
     st.session_state.chat_session = model.start_chat()
-    st.session_state.chat_history = []  
-
-
-# In[10]:
-
-
-# See if there's an ongoing chat session; if not, start a new one.
-#if 'chat_session' not in st.session_state:
- #   model = genai.GenerativeModel('gemini-1.5-pro')
- #   st.session_state.chat_session = model.start_chat()
- #   st.session_state.chat_history = []  
+    st.session_state.chat_history = []
+    st.session_state.interaction_count = 0
 
 def handle_chat(question):
     try:
-         # add an introduction to our response to make it more welcoming for users.
         intro_response = "Hi there! I'm Gigi, your AI dentist chatbot here to help you evaluate your dental symptoms. Let's work through this together."
-        # Sends the user's question to the chat API and gets a response.
         response = st.session_state.chat_session.send_message(question)
-        # Puts together a friendly introduction, the API's response, and a prompt to keep the conversation going.
         full_response = f"{intro_response} {response.text} Is there anything else I can assist you with regarding your dental health?"
 
-        # Appends the question and response to the session's history for display.
         st.session_state.chat_history.append({"type": "Question", "content": question})
         st.session_state.chat_history.append({"type": "Response", "content": full_response})
+        st.session_state.interaction_count += 1
         return full_response
     except Exception as e:
-        # Handles exceptions by displaying an error message and returning a fallback message.
         st.error(f"An error occurred: {str(e)}")
-        time.sleep(1)  
+        time.sleep(1)
         return "An error occurred. Please try again."
 
-
-# In[11]:
-
-
 def display_history():
-    with st.container():  # Sets up a scrollable area for showing past conversations in the chat.
+    with st.container():
         for entry in st.session_state.chat_history:
-                # Formats and Displays user inquiries.
             if entry['type'] == "Question":
                 st.markdown(f"<p style='font-size:16px; font-weight:bold;'>Your Inquiry:</p><p style='font-size:16px;'>{entry['content']}</p>", unsafe_allow_html=True)
             elif entry['type'] == "Response":
-                # Formats and Displays responses from the chatbot.
                 formatted_response = entry['content'].replace("**", "<b>").replace("<b>", "</b>")
                 st.markdown(f"<p style='font-size:16px; font-weight:bold;'>Response from Gigi:</p><p style='font-size:16px;'>{formatted_response}</p>", unsafe_allow_html=True)
 
-
-# In[12]:
-
-
-# Streamlit App setup
 st.set_page_config(page_title="GGSS - Gigi's Grin Guru")
 st.header("Your Chatbot for Dental Wellness")
 
-# Creator Info
 with st.expander("Display info about the creator"):
     text = """Regino C. Gallena\n
     BSCS 3A AI
@@ -89,13 +53,8 @@ with st.expander("Display info about the creator"):
     """
     st.write(text)
 
-
-# In[13]:
-
-
-# A comprehensive guide on how to use the GGSS - Gigi's Smile Support
 with st.expander("Gigi's Smile Support: Getting Started "):
-    text = """Welcome to GGSS  - Gigi's Smile Support! Throughout this chat, Gigi will serve as your AI dental assistant. This chatbot is crafted to offer essential health insights and assist you with basic questions regarding symptoms, dental conditions, and wellness tips. Let's get started with these straightforward instructions for engaging with the chatbot:
+    text = """Welcome to GGSS - Gigi's Smile Support! Throughout this chat, Gigi will serve as your AI dental assistant. This chatbot is crafted to offer essential health insights and assist you with basic questions regarding symptoms, dental conditions, and wellness tips. Let's get started with these straightforward instructions for engaging with the chatbot:
 
 1. **Launching the Chat**\n
 Upon opening the application, you'll encounter a text input field labeled **"Enter your dental inquiry here:"**\n. This is where you'll pose your questions.\n
@@ -111,40 +70,22 @@ To initiate a new session and clear all prior conversations, utilize the **"Rese
 """
     st.markdown(text, unsafe_allow_html=True)
 
-
-# In[14]:
-
-
-# Main interaction area 
 user_input = st.text_input("Please type your dental-related questions here:", key="user_query")
 if st.button("Ask Gigi"):
     if user_input:
-        # See if the question already mentions specific words we're looking for.
-        if 'causes' in user_input.lower() or 'treatments' in user_input.lower():
-            response_text = handle_chat(user_input) 
+        if st.session_state.interaction_count < 2:
+            response_text = handle_chat(user_input)
         else:
-            # help the user narrow down their question to make it clearer.
-            refined_query = f"What are some typical causes and treatments for {user_input}?"
-            response_text = handle_chat(refined_query)
+            # After two interactions, handle the final conclusion or any specific logic.
+            conclusion_response = "Thank you for your questions! If you have more inquiries, please feel free to ask."
+            st.session_state.chat_history.append({"type": "Response", "content": conclusion_response})
+            st.session_state.interaction_count = 0  # Reset interaction count for new sessions.
         display_history()
     else:
         st.warning("Kindly input your inquiry regarding dental health information.")
 
-# Button to reset the conversation, clearing all history and starting a new session.
 if st.button("Reset Conversation"):
     model = genai.GenerativeModel('gemini-1.5-pro')
     st.session_state.chat_session = model.start_chat()
-    st.session_state.chat_history = []  # This clears the history
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
+    st.session_state.chat_history = []
+    st.session_state.interaction_count = 0  # Reset the interaction count
