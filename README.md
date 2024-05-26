@@ -83,7 +83,7 @@ streamlit run your_script_name.py
 
 3. **Accurate Responses Using Generative AI:**
 
--The chatbot utilizes Gemini, Google's Generative AI model, to generate accurate and helpful responses based on the user's input.
+- The chatbot utilizes Gemini, Google's Generative AI model, to generate accurate and helpful responses based on the user's input.
 
 4. **Continuing the Conversation:**
 
