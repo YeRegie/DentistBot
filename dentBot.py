@@ -18,7 +18,7 @@ if 'chat_session' not in st.session_state:
 
 def handle_chat(question):
     try:
-        intro_response = "Hi there! I'm Gigi, your AI dentist chatbot here to help you evaluate your dental symptoms. Let's work through this together."
+        intro_response = "Hi there! I'm Gigi, your AI dentist chatbot here to help you evaluate your dental symptoms."
         response = st.session_state.chat_session.send_message(question)
         full_response = f"{intro_response} {response.text} Is there anything else I can assist you with regarding your dental health?"
 
@@ -41,10 +41,9 @@ def display_history():
                 st.markdown(f"<p style='font-size:16px; font-weight:bold;'>Response from Gigi:</p><p style='font-size:16px;'>{formatted_response}</p>", unsafe_allow_html=True)
 
 st.set_page_config(page_title="GGSS - Gigi's Grin Guru")
-st.header("Your Chatbot for Dental Wellness")
-
-with st.expander("Display info about the creator"):
-    text = """Regino C. Gallena\n
+st.header("Your Chatbot for Dental Wellness\n")
+st.header("Info about the Developer")
+ text = """Regino C. Gallena\n
     BSCS 3A AI
     Final Project for CCS 229 - Intelligent Systems
     Bachelor of Science in Computer Science
@@ -52,6 +51,7 @@ with st.expander("Display info about the creator"):
     West Visayas State University
     """
     st.write(text)
+
 
 with st.expander("Gigi's Smile Support: Getting Started "):
     text = """Welcome to GGSS - Gigi's Smile Support! Throughout this chat, Gigi will serve as your AI dental assistant. This chatbot is crafted to offer essential health insights and assist you with basic questions regarding symptoms, dental conditions, and wellness tips. Let's get started with these straightforward instructions for engaging with the chatbot:
