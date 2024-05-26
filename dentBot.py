@@ -1,25 +1,33 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[8]:
+
+
 import streamlit as st
 import os
 import google.generativeai as genai
-from dotenv import load_dotenv
 import time
 
-# Load API key from environment variable
-api_key = os.getenv("GEMINI_API_KEY")
 
+# In[9]:
+
+
+ # Load API key from environment variable
+
+ api_key = os.getenv("GEMINI_API_KEY")
+
+ 
+ 
 # Configure Gemini API with the API key loaded from environment variable
+if api_key is None:
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
 if 'chat_session' not in st.session_state:
     model = genai.GenerativeModel('gemini-1.5-pro')
     st.session_state.chat_session = model.start_chat()
     st.session_state.chat_history = []
-    st.session_state.interaction_count = 0
-    st.session_state.step = 0
-    st.session_state.dental_history = ""
-    st.session_state.dental_issue = ""
     
-# Define dental-related keywords
 def is_relevant_question(question):
     health_keywords = ['tooth', 'dental', 'oral', 'teeth', 'gums', 'mouth', 'cavity', 'pain', 'sensitivity', 'health']
     return any(keyword in question.lower() for keyword in health_keywords)
@@ -27,16 +35,15 @@ def is_relevant_question(question):
 def handle_chat(question):
     try:
         if is_relevant_question(question):
+            intro_response = "Hi there! I'm Gigi, your AI dentist chatbot here to help you with your dental symptoms."
             response = st.session_state.chat_session.send_message(question)
-            st.session_state.chat_history.append({"type": "Question", "content": question})
-            st.session_state.chat_history.append({"type": "Response", "content": response.text})
-            st.session_state.interaction_count += 1
-            return response.text
+            full_response = f"{intro_response} {response.text} Is there anything else I can assist you with regarding your dental health?"
         else:
-            response_text = "Please ask questions related to dental or health issues."
-            st.session_state.chat_history.append({"type": "Question", "content": question})
-            st.session_state.chat_history.append({"type": "Response", "content": response_text})
-            return response_text
+            full_response = "I'm here to help with dental and health-related questions. Could you please ask something related to dental health or oral hygiene?"
+        
+        st.session_state.chat_history.append({"type": "Question", "content": question})
+        st.session_state.chat_history.append({"type": "Response", "content": full_response})
+        return full_response
     except Exception as e:
         st.error(f"An error occurred: {str(e)}")
         time.sleep(1)
