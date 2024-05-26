@@ -76,7 +76,7 @@ if st.button("Ask Gigi"):
         if st.session_state.interaction_count < 2:
             response_text = handle_chat(user_input)
         else:
-            # After two interactions, handle the final conclusion or any specific logic.
+            response_text = handle_chat(user_input)
             conclusion_response = "Thank you for your questions! If you have more inquiries, please feel free to ask."
             st.session_state.chat_history.append({"type": "Response", "content": conclusion_response})
             st.session_state.interaction_count = 0  # Reset interaction count for new sessions.
