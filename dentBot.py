@@ -41,11 +41,12 @@ def display_history():
                 st.markdown(f"<p style='font-size:16px; font-weight:bold;'>Response from Gigi:</p><p style='font-size:16px;'>{formatted_response}</p>", unsafe_allow_html=True)
 
 st.set_page_config(page_title="GGSS - Gigi's Grin Guru")
-st.header("Your Chatbot for Dental Wellness")
+st.header("Gigi's Smile Support: Grin Guru")
+st.markdown("**Your Chatbot for Dental Wellness**\n")
 
 # Info about the Developer section
 st.markdown("**Info about the Developer**")
-developer_info = """Regino C. Gallena\n
+developer_info = """**Regino C. Gallena**\n
 BSCS 3A AI
 Final Project for CCS 229 - Intelligent Systems
 Bachelor of Science in Computer Science
