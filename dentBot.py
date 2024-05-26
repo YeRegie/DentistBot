@@ -15,12 +15,10 @@ import time
 
  # Load API key from environment variable
 
+# Load API key from environment variable
 api_key = os.getenv("GEMINI_API_KEY")
 
- 
- 
 # Configure Gemini API with the API key loaded from environment variable
-        if api_key is None:
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
 if 'chat_session' not in st.session_state:
